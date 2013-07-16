@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+  <![CDATA[
+   import util.checkEvent;
+   public function add():void{
+    this.parent.parent.parent.dispatchEvent(new checkEvent(data,del_check.selected));   
+   }
+  ]]>
+ </mx:Script>
+ <mx:CheckBox id="del_check" x="8" y="0" change="add()"/>
+</mx:HBox>

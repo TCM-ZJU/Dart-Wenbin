@@ -1,0 +1,14 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix fe: <http://www.semanticweb.org/ontologies/2009/11/Ontology/wuxing.owl#>.
+
+[rule1: (?e fe:存在 fe:风邪),(?e fe:存在 fe:寒邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:风寒表实证)]
+[rule2: (?e fe:存在 fe:风邪),(?e fe:存在 fe:寒邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:风寒表虚证)]
+[rule3: (?e fe:存在 fe:风邪),(?e fe:存在 fe:热邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:风热表证)]
+[rule4: (?e fe:存在 fe:风邪),(?e fe:存在 fe:燥邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:凉燥)]
+[rule5: (?e fe:存在 fe:风邪),(?e fe:存在 fe:燥邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:温燥)]
+[rule6: (?e fe:存在 fe:暑邪),(?e fe:存在 fe:湿邪),(?e fe:影响 ?h),(?h rdf:type fe:人体)-> (?h fe:有病证 fe:暑湿伤表)]
+[rule7: (?zhengA fe:导致 ?zhengB),(?zhengA fe:主体为 ?organA),(?zhengB fe:主体为 ?organB),
+				(?organA fe:属 ?elemtA),(?organB fe:属 ?elemtB),(?elemtA fe:生 ?elemtB) -> (?zhengA fe:母病及子 ?zhengB)]

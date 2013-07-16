@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties analytics="false" mainApplicationPath="WenBing.mxml" version="6">
+  <compiler additionalCompilerArguments="-services &quot;G:/workspace/WenBing/WebContent/WEB-INF/flex/services-config.xml&quot; -locale en_US" autoRSLOrdering="false" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="WebContent" sourceFolderPath="flex_src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="false" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="1">
+      <libraryPathEntry kind="4" path=""/>
+      <libraryPathEntry kind="1" linkType="1" path="flex_libs"/>
+    </libraryPath>
+    <sourceAttachmentPath>
+      <sourceAttachmentPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/datavisualization.swc" sourcepath="${PROJECT_FRAMEWORKS}/projects/datavisualization/src" useDefaultLinkType="false"/>
+    </sourceAttachmentPath>
+  </compiler>
+  <applications>
+    <application path="WenBing.mxml"/>
+  </applications>
+  <modules>
+    <module application="flex_src/WenBing.mxml" destPath="symptom/SymptomPanel.swf" optimize="true" sourcePath="flex_src/symptom/SymptomPanel.mxml"/>
+    <module application="flex_src/WenBing.mxml" destPath="modeldisplay/Model.swf" optimize="true" sourcePath="flex_src/modeldisplay/Model.mxml"/>
+  </modules>
+  <buildCSSFiles/>
+</actionScriptProperties>

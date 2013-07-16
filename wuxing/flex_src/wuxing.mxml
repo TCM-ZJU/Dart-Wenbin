@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="*" xmlns:dart="dart.*" fontSize="10">
+	<mx:TabNavigator width="100%" height="100%" borderStyle="outset" creationPolicy="all">
+		<local:firstpage/>
+		<local:reasoning/>
+		<local:help/>
+	</mx:TabNavigator>
+</mx:Application>

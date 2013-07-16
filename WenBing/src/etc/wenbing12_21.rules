@@ -1,0 +1,23 @@
+@include <OWL>.
+@include <RDFS>.
+
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix wb: <http://www.semanticweb.org/ontologies/2009/9/Ontology1255418418125.owl#>.
+
+
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:头晕), (?X wb:有症状 wb:气粗), (?X wb:有症状 wb:微恶寒), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:苔燥), (?X wb:有症状 wb:脉洪), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:暑入阳明)]
+[rule2: (?X wb:有症状 wb:壮热), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:头晕), (?X wb:有症状 wb:面红), (?X wb:有症状 wb:气粗), (?X wb:有症状 wb:目赤), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:苔燥), (?X wb:有症状 wb:脉洪), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:暑入阳明)]
+[rule1:	(?X wb:有症状 wb:发热), (?X wb:有症状 wb:微恶寒),(?X wb:有症状 wb:少汗), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:恶心), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:脉浮), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:卫气同病)]
+[rule1:	(?X wb:有症状 wb:发热), (?X wb:有症状 wb:微恶寒),(?X wb:有症状 wb:少汗), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:惊厥),(?X wb:有症状 wb:头痛), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:恶心), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:脉浮), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:卫气同病)]
+[rule1:	(?X wb:有症状 wb:潮热), (?X wb:有症状 wb:便秘),(?X wb:有症状 wb:腹满硬痛), (?X wb:有症状 wb:谵语), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔黄老), (?X wb:有症状 wb:脉沉实), -> (?X wb:有证候 wb:胃肠热结)]
+[rule1:	(?X wb:有症状 wb:潮热), (?X wb:有症状 wb:便秘),(?X wb:有症状 wb:腹满硬痛), (?X wb:有症状 wb:谵语), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:舌红), (?X wb:有症状 wb:苔焦燥起刺), (?X wb:有症状 wb:脉沉实), -> (?X wb:有证候 wb:胃肠热结)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:心烦), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉细), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:嗜睡), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉细), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:谵语), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉细), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:心烦), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉弦), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:嗜睡), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉弦), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:口渴),(?X wb:有症状 wb:谵语), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:气促), (?X wb:有症状 wb:呕吐), (?X wb:有症状 wb:颈项稍强), (?X wb:有症状 wb:抽搐), (?X wb:有症状 wb:舌红),(?X wb:有症状 wb:舌绛), (?X wb:有症状 wb:苔黄糙), (?X wb:有症状 wb:脉弦), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:气营两燔)]

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" width="100%" height="100%" creationComplete="init();" xmlns:util="util.*">
+<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		import mx.controls.Label;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import com.adobe.serialization.json.JSON;
+  		import com.adobe.serialization.json.JSONDecoder;
+  		import mx.events.ListEvent;
+  		import flash.events.Event;
+  		import util.*;
+  		
+  		internal function init():void{
+  			getSymptomTree.send();
+  		}
+  		[Bindable]
+  		private var sellist:Array=new Array();  // selected symptom set
+  		private function Add():void{
+			if(sympByCatolist.selectedItems.length == 0){
+				Alert.show("请选择要添加的症状和体征！","提示");
+				return ;
+			}
+			else{
+				var sel:Array = sympByCatolist.selectedItems;
+				for(var i:int=0;i<sel.length;i++){
+					if(sellist.indexOf(sel[i].text) == -1){
+						sellist.push(sel[i].text);
+						addto(sel[i].text);
+					}
+							
+			//		Alert.show(sel[i].text);
+				}
+				SelectedList.dataProvider = sellist;
+			}
+  		}
+  		private function remove():void{
+  			if(SelectedList.selectedItem == null){
+  				Alert.show("请选择要移除的症状和体征！","提示");
+				return ;
+  			}else{
+  			//	Alert.show(SelectedList.selectedItem.toString());
+  				sellist.splice(sellist.indexOf(SelectedList.selectedItem.toString()),1);
+  				SelectedList.dataProvider = sellist;
+  			}
+  		}
+  		[Embed(source="../icon/tree.gif")] public var treeIcon:Class;
+   		private function iconFun(item:Object):*{return treeIcon;}
+   		
+		private function getSymTree(event:ResultEvent):void{
+			var xml:XML = new XML(event.result.toString());
+			symplist.dataProvider = xml;
+		}
+		private function faultHandler(event:FaultEvent):void{
+			mx.controls.Alert.show(event.fault.toString(),"出错！");
+		}
+		/**
+		 * get symptom Instance & its handler
+		 */
+		private function getInsta(event:ListEvent):void{
+			var sym:XML =Tree(event.target).selectedItem as XML;
+			var syms:String = sym.@label;
+			var para:Object = new Object();
+			para.symca = syms;
+			getIns.send(para);
+		}
+		private function getInsHandler(event:ResultEvent):void{
+			var rawdata:String = event.result.toString();
+			rawdata = rawdata.replace(/\s/g,"");
+         	var res:JSONDecoder = new JSONDecoder(rawdata);
+			sympByCatolist.dataProvider = res.getValue(); 
+		}
+		[Bindable]
+		private var selectedlist:XML = <symNodes/>;
+		private function addto(txt:String):void{
+			var nodes:XMLList = null;
+			if(txt == null){
+				
+			}else{
+				selectedlist.appendChild(<node/>);
+				nodes = selectedlist.node;
+				var length:int = nodes.length();
+				selectedlist.node[length-1].@label = txt;
+			//	Alert.show(selectedlist);
+			}
+		}
+		[Embed(source="../icon/tilelist.gif")] public var tilelistIcon:Class;
+   		private function iconFunTileList(item:Object):*{return tilelistIcon;}
+		/**
+		 *  clear the selected symptoms list
+		 */
+		private function clearlist():void{
+			while(sellist.length !=0)
+				sellist.pop();
+			SelectedList.dataProvider = sellist;
+		}
+		
+		/**
+		 *  get suggestion for symptoms & its handler
+		 */
+		private function getanswer():void{
+			var para:Object = new Object();
+			para.syms = "";
+			para.syms = sellist.toString();
+		//	Alert.show(para.syms);
+		//	para.syms="气粗,头晕,心烦,口渴,壮热,面红,目赤";
+			getAns.send(para);
+		}
+		private function getAnsHandler(event:ResultEvent):void{
+			synd.text = "";
+			treat.text = "";
+			formu.text = "";
+			var rawdata:String = event.result.toString();
+			var data:XML = new XML(rawdata);
+			var syn:String = data.syndrom;
+			synd.text = syn;
+			var mydata:XMLList = data.treatformulalist;
+			for(var i:int = 0; i<mydata.length(); i++){
+				var treatment:String = mydata[i].treatformula.treatment;
+				treat.text = treat.text + treatment;
+				var formulas:XMLList = mydata[i].treatformula.formulalist.formula;
+			//	Alert.show("formula length:"+formulas.length());
+				for(var j:int = 0; j<formulas.length();j++){
+					var formula:String = formulas[j];
+					if(j==0)
+						formu.text = formu.text + formula;
+					else
+						formu.text = formu.text+" 或 "+formula;
+				}
+			}		
+		}
+	]]>
+</mx:Script>
+	<mx:Panel minWidth="250" width="30%" height="100%" layout="absolute" title="症状和体征类" titleIcon="@Embed(source='../icon/tree.gif')">
+		<mx:Tree id="symplist" width="100%" labelField="@label" height="100%" itemClick="getInsta(event)" iconFunction="iconFun" >			
+		</mx:Tree>
+	</mx:Panel>
+	<mx:VDividedBox width="70%" height="100%">
+			<mx:Panel id="sympInstancePanel" layout="horizontal" width="100%" height="50%" title="症状和体征" titleIcon="@Embed(source='../icon/tilelist.gif')">
+				<mx:List id="sympByCatolist" width="150" height="100%" labelField="text" allowMultipleSelection="true" iconFunction="iconFunTileList">
+					
+				</mx:List>
+				<mx:VBox width="10%" height="100%">
+					<mx:Spacer height="50"/>
+					<mx:Button label="添加" click="Add();"  icon="@Embed(source='../icon/toright.gif')"/>
+					<mx:Button label="移除" click="remove();"  icon="@Embed(source='../icon/toleft.gif')"/>
+				</mx:VBox>
+				<mx:VBox width="60%">
+					<mx:TileList  id="SelectedList" width="100%" height="80%" dataProvider="{sellist}"  columnWidth="70" iconFunction="iconFunTileList">
+					</mx:TileList >
+					<mx:HBox>
+						<mx:Button label="提交" click="getanswer();"/>
+						<mx:Button label="清空" click="clearlist();" />
+					</mx:HBox>
+				</mx:VBox>				
+			</mx:Panel>
+		<mx:Panel id="anwser" width="100%" height="50%" title="推荐方案" titleIcon="@Embed(source='../icon/suggestion.gif')">
+			<mx:HBox>
+				<mx:Label text="证候" fontFamily="Arial" fontSize="15" fontWeight="bold"/><mx:Label id="synd"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="治法" fontFamily="Arial" fontSize="15" fontWeight="bold"/><mx:Label id="treat"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="方剂" fontFamily="Arial" fontSize="15" fontWeight="bold"/><mx:Label id="formu"/>
+			</mx:HBox>
+		</mx:Panel>
+	</mx:VDividedBox>
+<!--	<mx:HTTPService id="getSymptomTree" showBusyCursor="true" url="./action/SymptomAction" resultFormat="text" result="getSymTree(event);" fault="faultHandler(event);"/>-->
+	<mx:HTTPService id="getSymptomTree" showBusyCursor="true" url="./getSymptomTreeServlet" resultFormat="e4x" result="getSymTree(event);" fault="faultHandler(event);"/>
+	<mx:HTTPService id="getIns" showBusyCursor="true" url="./action/SymptomInsAction" resultFormat="text" result="getInsHandler(event);" fault="faultHandler(event);"/>
+	<mx:HTTPService id="getAns" showBusyCursor="true" url="./getAnswerServlet" resultFormat="e4x" result="getAnsHandler(event);" fault="faultHandler(event);" />
+</mx:Module>

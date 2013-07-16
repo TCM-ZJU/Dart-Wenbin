@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" /><!--
+
+    <include file="example.xml"/>
+
+
+
+    --><package name="default" namespace="/" extends="struts-default">
+        <action name="SymptomAction" class="action.symptomAction">
+            <result name="success">/json/list.jsp</result>
+        </action>
+        <action name="SymptomInsAction" class="action.symptomInsAction">
+            <result name="success">/json/symInslist.jsp</result>
+        </action>
+        <action name="getSuggestionAction" class="action.getSuggestionAction">
+            <result name="success">/json/suggestion.jsp</result>
+        </action>
+        <action name="getSuggestion" class="action.getSuggestionAction" method="executeforF">
+            <result name="success">/json/suggestion.jsp</result>
+        </action>
+    </package>
+
+    <!-- Add packages here -->
+
+</struts>

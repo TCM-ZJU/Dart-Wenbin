@@ -1,0 +1,13 @@
+@include <OWL>.
+@include <RDFS>.
+
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix wb: <http://www.semanticweb.org/ontologies/2009/9/Ontology1255418418125.owl#>.
+
+
+[rule1:	(?X wb:有症状 wb:壮热), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:头晕), (?X wb:有症状 wb:气粗), (?X wb:有症状 wb:微恶寒), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:苔燥), (?X wb:有症状 wb:脉洪), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:暑入阳明)]
+[rule2: (?X wb:有症状 wb:壮热), (?X wb:有症状 wb:汗多), (?X wb:有症状 wb:口渴), (?X wb:有症状 wb:心烦), (?X wb:有症状 wb:头痛), (?X wb:有症状 wb:头晕), (?X wb:有症状 wb:面红), (?X wb:有症状 wb:气粗), (?X wb:有症状 wb:目赤), (?X wb:有症状 wb:苔黄), (?X wb:有症状 wb:苔燥), (?X wb:有症状 wb:脉洪), (?X wb:有症状 wb:脉数)-> (?X wb:有证候 wb:暑入阳明)]

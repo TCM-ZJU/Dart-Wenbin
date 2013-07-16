@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="100%" height="100%" y="0" label="首页" xmlns:local="*" xmlns:dart="dart.*" creationComplete="init();" paddingTop="0" paddingBottom="0">
+	<mx:Script>
+		<![CDATA[
+			import dart.action;
+			import mx.controls.Button;
+			import dart.five;
+			import dart.round;
+			import dart.frame;
+			import mx.core.UIComponent;
+			import mx.controls.Alert;
+			import flash.display.Sprite;
+			
+			private var fi:five;
+			private var ac:action;
+			private var fm:frame;
+			
+			private var organname:String = "";
+			
+			private function init():void
+			{
+				fi  = new five();
+				ac = new action();
+				
+				fi.btn1.x = 5;
+				fi.btn1.y = 10;
+				
+				fi.x = (uc.width - fi.default_camera.viewport.width) /2;
+				fi.y = (uc.height - fi.default_camera.viewport.height) / 2;
+				
+				uc.addChild(fi);
+				panel1.addEventListener(MouseEvent.MOUSE_DOWN, fi.onMouseDown);
+				panel1.addEventListener(MouseEvent.MOUSE_UP, fi.onMouseUp);
+				btn1.x = uc.width * 0.2;
+				btn1.y = uc.height * 0.2;
+				btn2.x = uc.width * 0.2;
+				btn2.y = uc.height * 0.4;
+				btn2.width = btn1.width;
+				btn1.addEventListener(MouseEvent.MOUSE_OVER, btnover);
+				btn2.addEventListener(MouseEvent.MOUSE_OVER, btnover);
+				btn1.addEventListener(MouseEvent.MOUSE_OUT, btnout);
+				btn2.addEventListener(MouseEvent.MOUSE_OUT, btnout);
+				
+				panel1.addEventListener(MouseEvent.CLICK, cl1);
+				panel2.addEventListener(MouseEvent.CLICK, cl2);
+				
+				
+				ac.x = uc.width/2 - 120;
+				ac.y = uc.height/2 - (200 + 100)/2;
+				
+				trace("asdf"+ac.width);
+				trace("wqqwe"+ac.height);
+				btn3.x = uc.width * 0.2;
+				btn3.y = uc.height * 0.3;
+				btn4.x = uc.width * 0.2;
+				btn4.y = uc.height * 0.3;
+				uc1.addChild(ac);
+				
+				
+			}
+			private function btn1click():void
+			{
+				if(btn1.label == "中土模型")
+				{
+					fi.mouseclick1();
+					btn1.label = "五行模型";
+					
+				}
+				else
+				{
+					fi.mouseclick2();
+					btn1.label = "中土模型";
+				}
+			}
+			private function btn2click():void
+			{
+				if(btn2.label == "脏腑")
+				{
+					btn2.label = "元素";
+					fi.model = true;
+				}
+				else
+				{
+					btn2.label = "脏腑";
+					fi.model = false;
+				}
+				fi.changname();
+			}
+			private function btn3click():void
+			{
+				myViewStack.selectedChild = panel1;
+				label1.text = "五行模型展示";
+			}
+			private function cl1(e:MouseEvent):void
+			{
+				if (fi.model && fi.na != null && fi.na != "")
+				{
+					myViewStack.selectedChild = panel2;
+					label1.text = "“"+ fi.na+"”的生理活动";	
+					organname = fi.na;
+				}
+			}
+			private function cl2(e:MouseEvent):void
+			{
+				if (ac.na != null && ac.na != "")
+				{
+					if (ac.na == "气")
+					{
+						if(uc2.numChildren!=0)
+							uc2.removeChild(fm);
+						fm = new frame(organname + ac.na);
+						fm.x = (uc.width - fm.default_camera.viewport.width) /2;
+						fm.y = (uc.height - fm.default_camera.viewport.height) / 2;
+						uc2.addChild(fm);
+						panel3.addEventListener(MouseEvent.MOUSE_DOWN, fm.onMouseDown);
+						panel3.addEventListener(MouseEvent.MOUSE_UP, fm.onMouseUp);
+						myViewStack.selectedChild = panel3;
+						label1.text = "“" + organname + ac.na+"”框架图";	
+					}
+					else
+					{
+						Alert.show("功能待开发中，请点击“气”","");
+					}
+				}
+			}
+			private function btnover(e:MouseEvent):void
+			{
+				fi.ballin = true;
+			}
+			private function btnout(e:MouseEvent):void
+			{
+				fi.ballin = false;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Text id="label1" text="五行模型展示" fontSize="50" fontFamily="Times New Roman" fontWeight="bold"  textAlign="center" color="#F34E0D" width="100%" height="10%"/>
+	<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="90%">
+		<mx:Panel id="panel1" width="100%" height="100%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+			
+			<mx:Button id="btn1" label="中土模型" color="#993300" toggle="true" selected="true"
+                 textAlign="center" fontStyle="italic" fontSize="13" click="btn1click();"/>
+            <mx:Button id="btn2" label="脏腑" color="#993300" toggle="true" selected="true"
+                 textAlign="center" fontStyle="italic" fontSize="13"  click="btn2click();" width="82" labelPlacement="right" x="0" y="0"/>
+			<mx:UIComponent id="uc" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+			</mx:UIComponent>
+		</mx:Panel>
+		<mx:Panel id="panel2" width="100%" height="100%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+		    <mx:Button id="btn3" label="返回" color="#993300" toggle="true" selected="true"
+                 textAlign="center" fontStyle="italic" fontSize="13" click="btn3click();"/>
+            <mx:UIComponent id="uc1" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+			</mx:UIComponent>
+		</mx:Panel>
+		<mx:Panel id="panel3" width="100%" height="100%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+		    <mx:Button id="btn4" label="返回" color="#993300" toggle="true" selected="true"
+                 textAlign="center" fontStyle="italic" fontSize="13" click="btn3click();"/>
+            <mx:UIComponent id="uc2" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+			</mx:UIComponent>
+		</mx:Panel>
+	</mx:ViewStack>
+	
+</mx:Panel>

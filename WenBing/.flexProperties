@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexProperties enableServiceManager="false" flexServerFeatures="4" flexServerType="2" flexWarLocation="D:/apache-tomcat-7.0.12/webapps/blazeds.war" serverContextRoot="/WenBing" serverRoot="G:/workspace/WenBing/WebContent" serverRootURL="http://localhost:8080/WenBing" toolCompile="true" useServerFlexSDK="false" version="1"/>

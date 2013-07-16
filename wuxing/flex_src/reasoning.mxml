@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="100%" height="100%" y="0" label="病机推理" xmlns:local="*" xmlns:dart="dart.*" creationComplete="init();" paddingTop="0" paddingBottom="0">
+	<mx:Script>
+		<![CDATA[
+			import dart.example;
+			import org.papervision3d.core.utils.Mouse3D;
+			import dart.liuxie;
+			import dart.qingzhi;
+			import dart.reason;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+			
+			private var qz:qingzhi;
+			private var lx:liuxie;
+			private var te:reason;
+			private var resultString:String;
+			
+			private var tempp:Panel = new Panel();
+			
+			[Bindable]
+			private var treeData:XML;
+			
+			private function init():void
+			{
+				qz = new qingzhi();
+				lx = new liuxie();
+				qz.x = myViewStack.width / 4 - 200;
+				qz.y = myViewStack.height * 0.4 - 180;
+				lx.x = myViewStack.width / 4 - 200;
+				lx.y = myViewStack.height * 0.4 - 180;
+				//qz.x = (panel1.width - qz.width)/2;
+				//qz.y = (panel1.height - qz.height)/2;
+				uc11.addChild(qz);
+				uc12.addChild(lx);
+				btn1.x = myViewStack.width * 0.4;
+				btn1.y = myViewStack.height * 0.65; 
+				btn2.x = myViewStack.width * 0.8;
+				btn2.y = myViewStack.height * 0.3
+				panel11.addEventListener(MouseEvent.CLICK, cl1);
+				panel21.addEventListener(MouseEvent.CLICK, cl2);
+			}
+			
+			private function cl1(e:MouseEvent):void
+			{
+				if (qz.na != null && qz.na != "")
+				{
+					var sarray:Array = new Array();
+					if (qz.na == "怒")
+					{
+						sarray.push(qz.na);		
+						h.getReasoning(sarray.length, sarray);
+						label1.text = "“" + qz.na + "”" + "的病机推理";
+						l1.text = "主体：";
+						ta.text = "症状：";
+						treeData = null;
+						hdb.x = -300;
+						hdb.width = this.width + 225;
+						v1.width = this.width - 25;
+						v2.width = 325;
+						i1.visible = true;
+						i2.visible = false;
+						myViewStack.selectedChild = panel2;
+					}
+					else
+					{
+						Alert.show("功能待开发中，请点击怒","",4);
+					}
+				}
+			}
+			
+			private function cl2(e:MouseEvent):void
+			{
+				if (te.l != -1)
+				{
+					
+					var sarray:Array = new Array();
+					sarray = te.getarray();
+					hey.getReasoning(sarray);
+					
+					
+				}
+				else
+				{
+					if (te.na != "" && te.na != null)
+					{
+						//l1.htmlText = "<font size = '20' color = '#0000ff' ><b>主体：</b></font><font size = '20' color = '#0000ff' ><b><u>肝气</u></b></font>";
+						//ta.htmlText = "<font size = '20' color = '#0000ff' ><b>症状：</b></font><font size = '30' color = '#0000ff' ><b><u>胁痛</u></b></font>  <font size = '20' color = '#0000ff' ><b><u>胸闷</u></b></font>  <font size = '25' color = '#0000ff' ><b><u>脘胀</u></b></font>  <font size = '20' color = '#0000ff' ><b><u>嗳气</u></b></font>  <font size = '24' color = '#0000ff' ><b><u>妇女月经不调</u></b></font>  <font size = '28' color = '#0000ff' ><b><u>经前乳房肿块和情绪失调</u></b></font><br>"
+						//ta.htmlText += "<font size = '29' color = '#0000ff' ><b><u>便秘</u></b></font>   <font size = '12' color = '#0000ff' ><b><u>发热</u></b></font>   <font size = '12' color = '#0000ff' ><b><u>口渴</u></b></font>   <font size = '23' color = '#0000ff' ><b><u>失眠</u></b></font>   <font size = '23' color = '#0000ff' ><b><u>心烦</u></b></font>   <font size = '24' color = '#0000ff' ><b><u>数脉</u></b></font>   <font size = '15' color = '#0000ff' ><b><u>满面通红</u></b></font>   <font size = '18' color = '#0000ff' ><b><u>黄苔</u></b></font>   <font size = '10' color = '#0000ff' ><b><u>口舌生疮/舌尖红</u></b></font>   <font size = '22' color = '#0000ff' ><b><u>小便灼热/小便短黄/尿道涩痛</u></b></font>   "
+						hi.getReasoning(te.na);
+					}
+				}
+			}
+			
+			private function close(e:MouseEvent):void
+			{
+				PopUpManager.removePopUp(tempp);	
+			}
+			
+			private function btn1click()
+			{
+				var sarray:Array = new Array();
+				sarray = lx.getarray();
+				if (sarray.length != 0)
+				{
+					label1.text = "";
+					for (var i:int = 0; i < sarray.length; ++i)
+						label1.text += "“" + sarray[i] + "”";
+					label1.text += "的病机推理";
+					l1.text = "主体：";
+					ta.text = "症状：";
+					treeData = null;
+					hdb.x = -300;
+					hdb.width = this.width + 225;
+					i1.visible = true;
+					i2.visible = false;
+					v1.width = this.width - 25;
+					v2.width = 325;
+					h.getReasoning(sarray.length, sarray)
+					myViewStack.selectedChild = panel2;
+				}
+			}
+			private function btn2click():void
+			{
+				uc12.removeChild(lx);
+				lx = new liuxie();
+				lx.x = myViewStack.width / 4 - 200;
+				lx.y = myViewStack.height * 0.4 - 180;
+				uc12.addChild(lx);
+				label1.text = "病机推理";
+				myViewStack.selectedChild = panel1;
+				uc21.removeChild(te);
+			}
+			
+			private function i1click():void
+			{
+				i1.visible = false;
+				i2.visible = true;
+				hdb.x = 25
+				hdb.width = this.width - 100;
+				v1.width = this.width - 350;
+			}
+			
+			private function i2click():void
+			{
+				i2.visible = false;
+				i1.visible = true;
+				hdb.x = -300;
+				hdb.width = this.width + 225;
+				v1.width = this.width - 25;
+				v2.width = 325;
+			}
+			
+			private function gg(event:ResultEvent):void
+			{
+				resultString = event.result as String;
+				te = new reason(resultString);
+				//te.x = myViewStack.width/2 - 800
+				te.y = myViewStack.height * 0.3/2 - 200;
+				uc21.addChild(te);
+				
+			}
+			
+			private function ggg(event:ResultEvent):void
+			{
+				var sa:Array = new Array();
+				sa = event.result as Array;
+				l1.htmlText = "<font size = '20' color = '#0000ff' ><b>主体：</b></font>"+ sa[0];
+				ta.htmlText = "<font size = '20' color = '#0000ff' ><b>症状：</b></font>" + sa[1];
+				treeData = XML(sa[2]);
+			}
+			
+			private function gggg(event:ResultEvent):void
+			{
+				var sa:Array = new Array();
+				sa = event.result as Array;
+				var ex:example = new example(sa);
+					
+				var uu:UIComponent = new UIComponent();
+					
+				var tempbtn:Button = new Button();
+				tempp.width = 700;
+				tempp.height = 250;
+				uu.width = 650;
+				uu.height = 180;
+				uu.x = 20;
+				tempbtn.addEventListener(MouseEvent.CLICK, close);
+				tempbtn.label = "关闭";
+					//tempbtn.x = 100;
+					//tempbtn.y = 100;
+				uu.addChild(ex);
+				tempp.addChild(tempbtn);
+				tempp.addChild(uu);
+				tempp.x = myViewStack.width / 2 - tempp.width / 2;
+				tempp.y = myViewStack.height / 2 - tempp.height / 2;
+				PopUpManager.addPopUp(tempp, this, true);
+			}
+		]]>
+	</mx:Script>
+	
+
+	
+	<mx:XML id="treeData1">
+	    <node label="治则：疏肝">
+	        <node label="治法：疏肝解郁">
+	            <node label="方：柴胡疏肝散">
+	            	<node label="药：柴胡"/>
+	       		</node>
+	        </node>
+	        <node label="治法：理气化痰"/>
+	        <node label="治法：活血软坚"/>
+		</node>	
+    </mx:XML>
+	<mx:RemoteObject destination="hello" id="h" result="gg(event)" showBusyCursor="true">
+
+	</mx:RemoteObject>
+	<mx:RemoteObject destination="hi" id="hi" result="ggg(event)" showBusyCursor="true">
+
+	</mx:RemoteObject>
+	<mx:RemoteObject destination="hey" id="hey" result="gggg(event)" showBusyCursor="true">
+
+	</mx:RemoteObject>
+	<mx:Text id="label1" text="病机推理"  fontFamily="Times New Roman" fontWeight="bold" fontSize="50" textAlign="center" color="#F34E0D" width="100%" height="10%"/>
+	<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="90%">
+		<mx:Panel id="panel1" width="100%" height="100%" layout="horizontal" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+			<mx:Panel id="panel11" width="50%" height="100%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+				<mx:UIComponent id="uc11" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+				</mx:UIComponent>
+			</mx:Panel>
+			<mx:Panel id="panel12" width="50%" height="100%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+				<mx:Button id="btn1" label="开始推理" color="#993300" toggle="true" selected="true"
+                 textAlign="center" fontStyle="italic" fontSize="13" click="btn1click();"/>
+                 <mx:UIComponent id="uc12" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+				</mx:UIComponent>
+			</mx:Panel>
+		</mx:Panel>
+		<mx:Panel id="panel2" width="100%" height="100%" layout="vertical" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+		    <mx:Panel id="panel21" width="100%" height="50%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+		   		<mx:Button id="btn2" label="完成" color="#993300" toggle="true" selected="true"
+           		textAlign="center" fontStyle="italic" fontSize="13" click="btn2click();"/>
+           		<mx:UIComponent id="uc21" width="100%" height="100%" x="0" y="0" horizontalCenter="0">
+				
+				
+				</mx:UIComponent>
+            </mx:Panel>
+            <mx:Panel id="panel22" width="100%" height="50%" layout="absolute" borderStyle="solid" horizontalAlign="center" verticalAlign="middle">
+		   		<mx:Canvas id="ac" width="100%" height="100%">
+		   			  
+		   			  <mx:HDividedBox id="hdb" x="-300" width="100%" height="100%">
+		   			  	  <mx:VBox id="v2" width="300" height="100%" borderStyle="solid">
+						  		<mx:Tree id="mytree" width="100%" height="100%" labelField="@label" fontSize="15" showRoot="false" dataProvider="{treeData}">
+						  			
+						  		</mx:Tree>
+						  </mx:VBox>
+		   			  
+			   			  <mx:VBox id="v1" width="100%" height="100%"  borderStyle="solid">
+						  		<mx:TextArea id="l1" width="100%" height="10%" y="30" fontSize="20" color="#F34E0D">
+						    		<mx:text>
+						    			主体：肝
+						    		</mx:text>
+						    	</mx:TextArea>
+						    	<mx:TextArea id="ta" width="100%" height="90%" y="30" fontSize="20" color="#F34E0D">
+						    		<mx:text>
+						    			症状：以下略去10000字
+						    		</mx:text>
+						    	</mx:TextArea> 
+						  </mx:VBox>
+						  
+						  
+					  </mx:HDividedBox>
+					  
+					  <mx:Canvas width="25" height="100%" borderStyle="solid">
+		   			  		<mx:Button id="i1" icon="@Embed('/assets/1.jpg')" visible="true" width="20" click="i1click()" y="5">
+		   			  			
+		   			  		</mx:Button>
+		   			  		<mx:Button id="i2" icon="@Embed('/assets/2.jpg')" visible="false" width="20" click="i2click()" y="{i1.y}">
+		   			  			
+		   			  		</mx:Button>
+		   			  		<mx:Label text="治" width="100%" fontSize="20" y="25">
+					    	</mx:Label>
+					    	<mx:Label text="疗" width="100%" fontSize="20" y="50">
+					    	</mx:Label>
+					    	<mx:Label text="方" width="100%" fontSize="20" y="75">
+					    	</mx:Label>
+					    	<mx:Label text="法" width="100%" fontSize="20" y="100">
+					    	</mx:Label>
+		   			  </mx:Canvas>
+		   		</mx:Canvas>
+            </mx:Panel>
+		</mx:Panel>
+	</mx:ViewStack>
+</mx:Panel>

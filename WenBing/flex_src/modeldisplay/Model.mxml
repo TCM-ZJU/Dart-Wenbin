@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="100%" height="100%" 
+	creationComplete="startup()" xmlns:fc="com.adobe.flex.extras.controls.springgraph.*" xmlns:renderers="renderers.*">
+	<mx:Style>
+		@font-face {
+		    src: url("../style/simfang.ttf");
+		    fontFamily: myFontFamily;
+		    advancedAntiAliasing: true;
+		}
+		
+		.edgeLabel
+		{
+			fontFamily: myFontFamily;
+			fontSize: 12;
+			color: #000000;
+			textAlign: center;
+		}
+		
+		.nodeLabel
+		{
+			fontFamily: myFontFamily;
+			fontSize: 14;
+			color: #ffffff;
+			fontWeight: bold;
+			textAlign: center;
+		}
+		
+		ToolTip
+		{ 
+	        fontFamily: myFontFamily; 
+	        fontSize: 12; 
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import renderers.LabelEdgeRenderer;
+			import com.adobe.flex.extras.controls.springgraph.SpringGraph;
+			import mx.rpc.events.ResultEvent;
+			import com.adobe.flex.extras.controls.springgraph.Item;
+			import com.adobe.flex.extras.controls.springgraph.Graph;
+			import util.UtilFunc;
+			import renderers.CircleLabelView;
+			
+			[Bindable]
+			private var typeArrayCollection:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var graph:Graph = new Graph();
+			private var concept:String="";
+			private var typeUri:String="";
+			public static var EdgeColors:Array = [
+				0xFFF000,
+				0x000FFF,
+				0xFF00FF,
+				0x0000FF,
+				0x00FF00,
+				0xFFA500,
+				0xFF0000,
+				0xcccc00,
+				0x00cccc,
+				0xcc00cc];
+			
+			private function startup(): void {
+				loadMap();
+			}
+			private function loadMap():void
+			{
+				getMapService.send();
+			}
+			private function gotData(event: ResultEvent):void
+			{
+				graph.empty();
+				typeArrayCollection.removeAll();
+				roamer.resetHistory();
+				roamer.resetShowHide();
+				if (event.currentTarget.lastResult is XML)
+				{
+					parseXML(event.currentTarget.lastResult as XML);
+				}
+				roamer.dataProvider = graph;
+			//	Alert.show("Node number:"+graph.nodeCount);
+			//	Alert.show("Edge number :"+graph.edges.length);
+			}
+			
+			private function parseXML(xml:XML):void
+			{
+				var item:Item;
+				// look for <atom> elements that have no namespace
+				for each (var node:XML in xml..Node)
+				{
+					item = new Item(node.@id);
+					item.data = node;
+					graph.add(item);
+					if (UtilFunc.findIndex(typeArrayCollection, {Uri: node.Uri}, "Uri") == -1)
+					{
+						var type:Object = new Object();
+						type.Uri = node.Uri;
+						type.type = node.Type;
+						type.bgColor = CircleLabelView.NodeColors[UtilFunc.hash(type.Uri)];
+						typeArrayCollection.addItem(type);
+					}
+				}
+	
+
+				for each (var edge: XML in xml..Edge)
+				{
+					var fromID:String = edge.FromId;
+					var toID:String = edge.ToId;
+					var eLabel:String = edge.Label;
+					var Uri:String = edge.Uri;
+					var thick:int = 2;
+					var color:uint = EdgeColors[UtilFunc.hash(Uri, 10)];
+					var fromItem:Item = graph.find(fromID);
+					var toItem:Item = graph.find(toID);
+					if(fromItem != null && toItem != null)
+					{
+						// get the 'order' of the bond. Make sure it's a sensible number.
+						// create the data object that is associated with this edge.
+						// this object must specify various visual parameters for the line
+						// that represents the bond. (note: its ok to omit this, in
+						// which case the edge will be drawn using default settings).
+						var data: Object = {edgeLabel:eLabel, typeUri:Uri, color:color, alpha:1, thickness:thick};
+	//					trace("linkData before link:"+data);
+						// add the bond (a.k.a. link) to the graph
+						if (graph.linked(fromItem, toItem))
+						{
+							var dataArray:Array = graph.getLinkData(fromItem, toItem) as Array;
+							dataArray.push({fromID: fromItem.id, toID: toItem.id, data: data});
+						}
+						else
+						{
+							graph.link(fromItem, toItem, [{fromID: fromItem.id, toID: toItem.id, data: data}]);
+						}						
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Panel id="graphContainer" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+					<fc:Roamer id="roamer" bottom="0" top="0" right="0" left="0" backgroundColor="#f8f8f8"  width="100%" height="100%" 
+						itemRenderer="renderers.CircleLabelView"
+						edgeRenderer="{new LabelEdgeRenderer()}"
+						repulsionFactor="0.4" 
+						autoFit="true"
+						showHistory="true">
+						<fc:removeItemEffect>
+							<mx:Fade alphaFrom="1" alphaTo="0" duration="1000"/>				
+						</fc:removeItemEffect>
+						
+						<fc:addItemEffect>
+							<mx:Fade alphaFrom="0" alphaTo="1" duration="1000"/>
+						</fc:addItemEffect>
+					</fc:Roamer>
+					<mx:HBox width="100%" top="10" left="10">
+						<mx:Repeater id="rp" dataProvider="{typeArrayCollection}">
+							<renderers:CircleLabelView text="{rp.currentItem.type}" bgColor="{rp.currentItem.bgColor}"/>
+						</mx:Repeater>
+					</mx:HBox>
+				</mx:Panel>
+<mx:HTTPService id="getMapService" url="./getModelMap" showBusyCursor="true" useProxy="false" resultFormat="e4x" result="{gotData(event)}"/> 
+</mx:Module>
